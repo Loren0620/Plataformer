@@ -7,7 +7,7 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Configuración")]
     public Vector3 offset = new Vector3(0f, 1f, -10f); // distancia respecto al jugador
-    public float suavizado = 5f;                       // más alto = más pegada al jugador
+    public float suavizado = 5f;                       
 
     [Header("Opciones")]
     public bool seguirEjeY = true;   // desactívalo si quieres que la cámara no suba/baje
