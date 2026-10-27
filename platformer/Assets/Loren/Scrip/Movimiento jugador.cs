@@ -1,30 +1,65 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Movimientojugador : MonoBehaviour
-{ 
+public class MovimientoJugador : MonoBehaviour
+{
+    [Header("Movimiento")]
+    public float velocidad = 5f;          // velocidad automática hacia la derecha
+    public float multiplicadorDerecha = 1.5f; // más rápido si presionas →
+    public float multiplicadorIzquierda = 1f; // velocidad al ir hacia la izquierda con ←
 
-    [SerializeField] private float _jumpForce = 5f;
-    [SerializeField] private float _movementSpeed = 5f;
-    [SerializeField] private Rigidbody2D _rigidbody2D;
-    [SerializeField] private GroundCheck _groundCheck;
+    [Header("Salto")]
+    public float fuerzaSalto = 10f;
 
-    private void Awake()
+    private Rigidbody2D rb;
+    private float movimientoX;
+    private bool enSuelo;
+
+    void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        if (_groundCheck.isGround)
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        // Por defecto el jugador avanza solo hacia la derecha
+        movimientoX = 1f;
 
-                Debug.Log("Oprimí la tecla");
+        if (Keyboard.current == null) return;
+
+        // Flecha izquierda: retrocede
+        if (Keyboard.current.leftArrowKey.isPressed)
+            movimientoX = -multiplicadorIzquierda;
+
+        // Flecha derecha: avanza más rápido
+        else if (Keyboard.current.rightArrowKey.isPressed)
+            movimientoX = multiplicadorDerecha;
+
+        // Salto con ESPACIO (solo si está tocando el suelo)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && enSuelo)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, fuerzaSalto);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(movimientoX * velocidad, rb.linearVelocity.y);
+
+        // Se reinicia cada paso de física; OnCollisionStay2D lo vuelve a activar
+        enSuelo = false;
+    }
+
+    // Detecta si estamos pisando algo (normal apuntando hacia arriba)
+    void OnCollisionStay2D(Collision2D col)
+    {
+        foreach (ContactPoint2D punto in col.contacts)
+        {
+            if (punto.normal.y > 0.5f)
+            {
+                enSuelo = true;
+                return;
             }
         }
-
-        _rigidbody2D.linearVelocity = new Vector2(1 * _movementSpeed, _rigidbody2D.linearVelocity.y);
     }
 }
