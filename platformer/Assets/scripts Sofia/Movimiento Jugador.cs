@@ -1,29 +1,40 @@
 using UnityEngine;
- 
+using UnityEngine;
+using UnityEngine.InputSystem;
+
 public class MovimientoJugador : MonoBehaviour
 {
-    [SerializeField] private float _fuerzaSalto = 5f;
-    [SerializeField] private float _velocidadmovimiento = 5f;
-    [SerializeField] private Rigidbody2D _cuerporigido2D;
-    [SerializeField] private DetectorSuelo _detectorSuelo;
- 
-    private void Awake()
+    public float velocidad = 5f;
+    public float fuerzaSalto = 20f;
+
+    private Rigidbody2D rb;
+    private float movimientoX;
+
+    void Start()
     {
-        _cuerporigido2D = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
- 
-    private void FixedUpdate()
+
+    void Update()
     {
-        if (_detectorSuelo.estaEnSuelo)
+        movimientoX = 0f;
+
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.aKey.isPressed)
+            movimientoX = -1f;
+
+        if (Keyboard.current.dKey.isPressed)
+            movimientoX = 1f;
+
+        if (Keyboard.current.wKey.wasPressedThisFrame)
         {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _cuerporigido2D.AddForce(Vector2.up * _fuerzaSalto, ForceMode2D.Impulse);
- 
-                Debug.Log("Oprimí la tecla");
-            }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x,fuerzaSalto);
         }
- 
-        _cuerporigido2D.linearVelocity = new Vector2(1* _velocidadmovimiento, _cuerporigido2D.linearVelocity.y);
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2( movimientoX * velocidad,rb.linearVelocity.y);
     }
 }
