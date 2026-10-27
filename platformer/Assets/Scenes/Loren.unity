@@ -11342,6 +11342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel inicio
       objectReference: {fileID: 0}
+    - target: {fileID: 3942609937952221988, guid: e6d1c483dca546c42bc123614e38fec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4588578488841176444, guid: e6d1c483dca546c42bc123614e38fec5, type: 3}
       propertyPath: m_Color.a
       value: 0
