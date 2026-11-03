@@ -1,27 +1,52 @@
-using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public void CargarEscena(int scene)
+    [SerializeField] private UIManager _uiManager;
+
+    void Start()
     {
-        SceneManager.LoadScene(scene);
+        Time.timeScale = 0f;
+        _uiManager.MostrarInicio(true);
     }
 
-    public void SalirDelJuego()
+    public void ComenzarNivel()
     {
-        Application.Quit();
+        Time.timeScale = 1f;
+        _uiManager.MostrarInicio(false);
+    }
+
+    public void CargarEscena(int indiceEscena)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(indiceEscena);
+    }
+
+    public void ReiniciarNivel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void SalirAlMenu()
+    {
+        CargarEscena(0);
     }
 
     public void PausarElJuego()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
     }
 
     public void ReanudarElJuego()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
     }
 
+    public void Derrota()
+    {
+        Time.timeScale = 0f;
+        _uiManager.MostrarDerrota();
+    }
 }

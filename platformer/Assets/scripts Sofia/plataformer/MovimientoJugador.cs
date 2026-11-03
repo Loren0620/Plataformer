@@ -3,18 +3,19 @@ using UnityEngine.InputSystem;
 
 public class MovimientoJugador : MonoBehaviour
 {
+    [Header("Movimiento")]
     public float velocidad = 5f;
+
+    [Header("Salto")]
     public float fuerzaSalto = 10f;
-    public GroundCheck groundCheck;
 
     private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
     private float movimientoX;
+    private bool enSuelo;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -23,29 +24,43 @@ public class MovimientoJugador : MonoBehaviour
 
         if (Keyboard.current == null) return;
 
-        if (Keyboard.current.aKey.isPressed)
-        {
-            movimientoX = -1f;
-            spriteRenderer.flipX = true;
-        }
+        bool izquierda = Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed;
+        bool derecha = Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed;
 
-        if (Keyboard.current.dKey.isPressed)
-        {
-            movimientoX = 1f;
-            spriteRenderer.flipX = false;
-        }
+        if (izquierda) movimientoX -= 1f;
+        if (derecha) movimientoX += 1f;
 
-        if (Keyboard.current.wKey.wasPressedThisFrame
-            && groundCheck != null && groundCheck.isGround)
+        bool saltar = Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.wKey.wasPressedThisFrame;
+
+        if (saltar && enSuelo)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x,fuerzaSalto);
-            
+#if UNITY_6000_0_OR_NEWER
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, fuerzaSalto);
+#else
+            rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
+#endif
         }
     }
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movimientoX * velocidad,rb.linearVelocity.y );
-       
+#if UNITY_6000_0_OR_NEWER
+        rb.linearVelocity = new Vector2(movimientoX * velocidad, rb.linearVelocity.y);
+#else
+        rb.velocity = new Vector2(movimientoX * velocidad, rb.velocity.y);
+#endif
+        enSuelo = false;
+    }
+
+    void OnCollisionStay2D(Collision2D col)
+    {
+        foreach (ContactPoint2D punto in col.contacts)
+        {
+            if (punto.normal.y > 0.5f)
+            {
+                enSuelo = true;
+                return;
+            }
+        }
     }
 }
