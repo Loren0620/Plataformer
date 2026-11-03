@@ -1,16 +1,21 @@
 using UnityEngine;
 
 public class EscudosHongos : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+{
+    [SerializeField] private int _curacion = 20;
+    [SerializeField] private bool _daEscudo = true;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        PlayerStats jugador = other.GetComponentInParent<PlayerStats>();
+        if (jugador == null) return;   // lo tocó otra cosa, no el jugador
+
+        jugador.RestaurarVida(_curacion);
+
+        if (_daEscudo)
+            jugador.ActivarEscudo();
+
+        Destroy(gameObject);           // desaparece
     }
 }
