@@ -5,11 +5,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private UIManager _uiManager;
 
-    void Start()
-    {
-        Time.timeScale = 0f;
-        _uiManager.MostrarInicio(true);
-    }
 
     public void ComenzarNivel()
     {
