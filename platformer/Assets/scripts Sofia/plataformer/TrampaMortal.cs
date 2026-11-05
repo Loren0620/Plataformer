@@ -1,21 +1,12 @@
 using UnityEngine;
 
-public class TrampaMortales : MonoBehaviour
+public class TrampaMortal : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D colision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (colision.gameObject.CompareTag("Player"))
         {
-            PlayerStats vidaJugador =
-                collision.gameObject.GetComponent<PlayerStats>();
-
-            if (vidaJugador != null)
-            {
-                vidaJugador.RestarVida(vidaJugador.VidaMaxima);
-            }
-            ;
+            Destroy(colision.gameObject);
         }
-
-        Destroy(collision.gameObject);
     }
 }

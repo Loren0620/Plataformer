@@ -3,11 +3,13 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private int _vidaMaxima = 100;
+    [SerializeField] private float _duracionEscudo = 1f;
     [SerializeField] private UIManager _uiManager;
     [SerializeField] private GameManager _gameManager;
 
     private int _vidaActual;
     private bool _escudoActivo;
+    private float _tiempoRestanteEscudo;
 
     void Start()
     {
@@ -17,23 +19,43 @@ public class PlayerStats : MonoBehaviour
         _uiManager.ActualizarEscudo(false);
     }
 
+    void Update()
+    {
+        if (!_escudoActivo) return;
+
+        // Time.deltaTime vale 0 en pausa, así que el escudo no se gasta mientras el juego está pausado
+        _tiempoRestanteEscudo -= Time.deltaTime;
+
+        if (_tiempoRestanteEscudo <= 0f)
+        {
+            _escudoActivo = false;
+            _uiManager.ActualizarEscudo(false);
+        }
+    }
+
     public void RestarVida(int daño)
     {
         if (_vidaActual <= 0) return;
 
-        // Escudo de un impacto: absorbe el golpe y se consume
-        if (_escudoActivo)
-        {
-            _escudoActivo = false;
-            _uiManager.ActualizarEscudo(false);
-            return;
-        }
+        // Escudo temporal: mientras esté activo no se recibe daño
+        if (_escudoActivo) return;
 
         _vidaActual = Mathf.Max(0, _vidaActual - daño);
         ActualizarInterfaz();
 
         if (_vidaActual <= 0)
             _gameManager.Derrota();
+    }
+
+    // Muerte instantánea (trampas mortales): el escudo también protege de ella
+    public void MatarInstantaneo()
+    {
+        if (_vidaActual <= 0) return;
+        if (_escudoActivo) return;
+
+        _vidaActual = 0;
+        ActualizarInterfaz();
+        _gameManager.Derrota();
     }
 
     public void RestaurarVida(int curacion)
@@ -46,7 +68,9 @@ public class PlayerStats : MonoBehaviour
 
     public void ActivarEscudo()
     {
+        // Si ya había un escudo, recoger otro reinicia los 15 segundos
         _escudoActivo = true;
+        _tiempoRestanteEscudo = _duracionEscudo;
         _uiManager.ActualizarEscudo(true);
     }
 
@@ -54,7 +78,6 @@ public class PlayerStats : MonoBehaviour
     {
         _uiManager.ActualizarVida(_vidaActual, _vidaMaxima);
 
-        // Mismos colores que ya tenías
         if (_vidaActual >= 80)
             _uiManager.ColorBarra(new Color(68f / 255f, 189f / 255f, 68f / 255f, 1f));
         else if (_vidaActual > 40)

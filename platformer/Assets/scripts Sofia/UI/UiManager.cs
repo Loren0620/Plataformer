@@ -1,3 +1,4 @@
+ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,4 +39,9 @@ public class UIManager : MonoBehaviour
     public void MostrarPausa(bool mostrar) => _panelPausa.SetActive(mostrar);
     public void MostrarDerrota() => _panelDerrota.SetActive(true);
     public void MostrarVictoria() => _panelVictoria.SetActive(true);
+
+    internal void RestarFillAmount(float v)
+    {
+        throw new NotImplementedException();
+    }
 }

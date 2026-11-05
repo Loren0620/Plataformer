@@ -34,11 +34,11 @@ public class MovimientoJugador : MonoBehaviour
 
         if (saltar && enSuelo)
         {
-#if UNITY_6000_0_OR_NEWER
+          #if UNITY_6000_0_OR_NEWER
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, fuerzaSalto);
-#else
+         #else
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
-#endif
+         #endif
         }
     }
 
