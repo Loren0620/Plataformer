@@ -10,12 +10,14 @@ public class MovimientoJugador : MonoBehaviour
     public float fuerzaSalto = 10f;
 
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
     private float movimientoX;
     private bool enSuelo;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Update()
@@ -29,6 +31,10 @@ public class MovimientoJugador : MonoBehaviour
 
         if (izquierda) movimientoX -= 1f;
         if (derecha) movimientoX += 1f;
+
+        // Flip: mira a la izquierda si va a la izquierda, a la derecha si va a la derecha
+        if (sr != null && movimientoX != 0f)
+            sr.flipX = movimientoX < 0f;
 
         bool saltar = Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.wKey.wasPressedThisFrame;
 
