@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class ganaste : MonoBehaviour
@@ -9,10 +10,13 @@ public class ganaste : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             panelganaste.SetActive(true);
-        }
-        if (collision.CompareTag("Player"))
-        {
+
+            FindObjectOfType<PlayerStats>().CompletarNivel();
+
+            Debug.Log("¡Nivel completado!");
+
             Time.timeScale = 0;
         }
     }
 }
+

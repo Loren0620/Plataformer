@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class TrampaMortal : MonoBehaviour
@@ -6,7 +7,17 @@ public class TrampaMortal : MonoBehaviour
     {
         if (colision.gameObject.CompareTag("Player"))
         {
-            Destroy(colision.gameObject);
+            PlayerStats playerStats = colision.gameObject.GetComponent<PlayerStats>();
+
+            if (playerStats != null)
+            {
+                playerStats.MatarInstantaneo();
+            }
+            else
+            {
+                Debug.LogError("No se encontró PlayerStats en el jugador.");
+            }
         }
     }
 }
+

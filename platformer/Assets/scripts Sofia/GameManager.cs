@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,9 +40,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    // DERROTA
     public void Derrota()
     {
         Time.timeScale = 0f;
         _uiManager.MostrarDerrota();
+    }
+
+    // VICTORIA
+    public void CompletarNivel()
+    {
+        Time.timeScale = 0f;
+        _uiManager.MostrarVictoria();
     }
 }
