@@ -358,6 +358,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3650487026109320313}
     m_Modifications:
+    - target: {fileID: 1671236041974301105, guid: ebaa9d836488d1a4fa70428305a9cfff, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3620911372199707473, guid: ebaa9d836488d1a4fa70428305a9cfff, type: 3}
       propertyPath: m_Name
       value: 'fondo  menu inicio '
@@ -446,6 +450,10 @@ PrefabInstance:
       propertyPath: _uiManager
       value: 
       objectReference: {fileID: 8378289917512704673}
+    - target: {fileID: 8370135680764679248, guid: ebaa9d836488d1a4fa70428305a9cfff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -581,6 +589,10 @@ PrefabInstance:
     - target: {fileID: 7234415527522214606, guid: 17954d9a5dd75b948a5cd4bea13de64b, type: 3}
       propertyPath: m_Name
       value: 'fondo menu '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7234415527522214606, guid: 17954d9a5dd75b948a5cd4bea13de64b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
